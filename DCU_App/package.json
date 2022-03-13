@@ -2,8 +2,9 @@
   "name": "dcu_app",
   "version": "1.0.0",
   "description": "",
-  "main": "dcu_server.js",
+  "main": "dcu_input.js",
   "scripts": {
+    "start": "node dcu_input.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

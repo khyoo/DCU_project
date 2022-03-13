@@ -22,13 +22,13 @@ mongoose.connection.on('error', function () {
 });
 
 // SPU message schema 객체 생성
-var spu_schema = mongoose.Schema({
+let spu_schema = mongoose.Schema({
     spu_id: String,
     boxes: Object
 });
 
 // 정의된 스키마를 객체처럼 사용할 수 있도록 model() 함수로 컴파일
-var SPU_Schema = mongoose.model('Sensor', spu_schema);
+let SPU_Schema = mongoose.model('Sensor', spu_schema);
 
 const mqtt_options = {
     host: CONFIG.mqtt.host,
@@ -52,8 +52,8 @@ mqtt_client.on('connect', function () {
 // mqtt message 이벤트 핸들러
 mqtt_client.on('message', function (topic, message) {
     // message is Buffer    
-    var msg_parse = JSON.parse(message);
-    var spu_messages = new SPU_Schema(msg_parse);
+    let msg_parse = JSON.parse(message);
+    let spu_messages = new SPU_Schema(msg_parse);
 
     spu_messages.save(function (error, data) {
         if (error)

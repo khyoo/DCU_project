@@ -2,8 +2,9 @@
   "name": "spu_app",
   "version": "1.0.0",
   "description": "SPU_App",
-  "main": "mqtt_from_spu1.js",
+  "main": "mqtt_from_spu.js",
   "scripts": {
+    "start": "node mqtt_from_spu.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
