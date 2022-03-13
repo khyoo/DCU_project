@@ -1,0 +1,24 @@
+{
+	"dcu_id": "dcu01",
+	"mqtt": {
+		"host": "202.31.147.183",
+		"port": "1883",
+		"topic": ["SPU_topic"],
+		"protocol": "mqtt",
+		"username": "admin",
+		"password": "1234"		
+	},
+	"mongodb": {
+		"host": "202.31.147.183",
+		"port": "27017",
+		"db": "DCU_Aggr",
+		"collection": "sensor",
+		"username": "admin",
+		"password": "admin"
+	},
+	"kafka": {
+		"host": "202.31.147.183",
+		"port": "9092",
+		"topic": ["DCU_kafka"]
+	}
+}
