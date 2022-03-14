@@ -1,5 +1,6 @@
 {
 	"spu_id": "spu2",
+	"spu_time": 0,
 	"boxes": [{
 			"box_id": "box0",
 			"time": 1630389119,

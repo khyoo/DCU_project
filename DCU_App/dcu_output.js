@@ -24,6 +24,7 @@ mongoose.connection.on('error', function () {
 // SPU message schema 객체 생성
 let spu_schema = mongoose.Schema({
     spu_id: String,
+    spu_time: Number,
     boxes: Object
 });
 
@@ -33,9 +34,9 @@ let SPU_Schema = mongoose.model('Sensor', spu_schema);
 // 현재 시간 UTC 변환
 let nowTime = Math.floor(new Date().getTime() / 1000);
 
-let header_msg = {
+let aggr_msg = {
     "dcu_id": CONFIG.dcu_id,
-    "dcu_time": nowTime,
+    "dcu_time": 0,
     "dcu_payload": []
 };
 
@@ -47,5 +48,74 @@ let Producer = kafka.Producer,
     KeyedMessage = kafka.KeyedMessage,
     kafkaClient = new kafka.KafkaClient({ kafkaHost: kafkaURI }),
     producer = new Producer(kafkaClient),
-    km = new KeyedMessage('key', 'message'),
-    payloads = [];
+    km = new KeyedMessage('key', 'message');
+
+let payloads_dcu = [];
+let spu0_temp = {};
+let spu1_temp = {};
+let spu2_temp = {};
+let spu3_temp = {};
+
+var interval = setInterval(function() {
+    nowTime = Math.floor(new Date().getTime() / 1000);
+    if ((nowTime % 10) == 0) {      
+        clearInterval(interval);
+
+        setInterval(function () {
+            nowTime = Math.floor(new Date().getTime() / 1000);
+            aggr_msg.dcu_time = nowTime;
+
+            SPU_Schema.findOne({'spu_id':'spu0', 'spu_time': {'$gte':nowTime-(CONFIG.aggr_period/1000), '$lte':nowTime}}, null, {sort: {'spu_time':-1}}, function(err, data){
+                if(err) {
+            
+                } else {
+                    spu0_temp = data;
+                    //console.log(data);
+                }
+            });
+            SPU_Schema.findOne({'spu_id':'spu1', 'spu_time': {'$gte':nowTime-(CONFIG.aggr_period/1000), '$lte':nowTime}}, null, {sort: {'spu_time':-1}}, function(err, data){
+                if(err) {
+            
+                } else {
+                    spu1_temp = data;
+                    //console.log(data);
+                }
+            });
+            SPU_Schema.findOne({'spu_id':'spu2', 'spu_time': {'$gte':nowTime-(CONFIG.aggr_period/1000), '$lte':nowTime}}, null, {sort: {'spu_time':-1}}, function(err, data){
+                if(err) {
+            
+                } else {
+                    spu2_temp = data;
+                    //console.log(data);
+                }
+            });
+            SPU_Schema.findOne({'spu_id':'spu3', 'spu_time': {'$gte':nowTime-(CONFIG.aggr_period/1000), '$lte':nowTime}}, null, {sort: {'spu_time':-1}}, function(err, data){
+                if(err) {
+            
+                } else {
+                    spu3_temp = data;
+                    //console.log(data);
+                }
+            });
+
+            aggr_msg.dcu_payload.push(spu0_temp);
+            aggr_msg.dcu_payload.push(spu1_temp);
+            aggr_msg.dcu_payload.push(spu2_temp);
+            aggr_msg.dcu_payload.push(spu3_temp);
+        
+            payloads_dcu = [{
+                topic: CONFIG.kafka.topic[0],
+                messages: JSON.stringify(aggr_msg),
+                partition: 0
+            }];
+            
+            producer.send(payloads_dcu, function (err, data) {
+                //console.log(data);    
+                aggr_msg.dcu_payload.length = 0;
+            });
+        },  CONFIG.aggr_period);
+    }
+  }, 1000);
+
+
+

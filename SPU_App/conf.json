@@ -1,5 +1,6 @@
 {
 	"spu_id": ["spu01","spu02","spu03","spu04"],
+	"spu_period": 5000,
 	"mqtt": {
 		"host": "202.31.147.183",
 		"port": "1883",

@@ -24,6 +24,7 @@ mongoose.connection.on('error', function () {
 // SPU message schema 객체 생성
 let spu_schema = mongoose.Schema({
     spu_id: String,
+    spu_time: Number,
     boxes: Object
 });
 

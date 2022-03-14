@@ -32,6 +32,7 @@ mqtt_client.on('connect', function () {
     // 3(3000)초 단위로 spu 메시지 발행
     setInterval(function () {
         nowTime = Math.floor(new Date().getTime() / 1000);
+        spu0_msg.spu_time = nowTime;
         //console.log(nowTime);
 
         for (var i = 0; i < 5; i++) {
@@ -45,12 +46,13 @@ mqtt_client.on('connect', function () {
 
         //console.log(spu0_msg);
         mqtt_client.publish(CONFIG.mqtt.topic[0], JSON.stringify(spu0_msg));
-    }, 5000);
+    }, CONFIG.spu_period);
 
     setTimeout(function() {
         // 3(3000)초 단위로 spu 메시지 발행
         setInterval(function () {
             nowTime = Math.floor(new Date().getTime() / 1000);
+            spu1_msg.spu_time = nowTime;
             //console.log(nowTime);
 
             for (var i = 0; i < 5; i++) {
@@ -64,13 +66,14 @@ mqtt_client.on('connect', function () {
 
             //console.log(spu1_msg);
             mqtt_client.publish(CONFIG.mqtt.topic[0], JSON.stringify(spu1_msg));
-        }, 5000);
+        }, CONFIG.spu_period);
     }, 1000);
 
     setTimeout(function() {
         // 3(3000)초 단위로 spu 메시지 발행
         setInterval(function () {
             nowTime = Math.floor(new Date().getTime() / 1000);
+            spu2_msg.spu_time = nowTime;
             //console.log(nowTime);
 
             for (var i = 0; i < 5; i++) {
@@ -84,13 +87,14 @@ mqtt_client.on('connect', function () {
 
             //console.log(spu2_msg);
             mqtt_client.publish(CONFIG.mqtt.topic[0], JSON.stringify(spu2_msg));
-        }, 5000);
+        }, CONFIG.spu_period);
     }, 2000);
 
     setTimeout(function() {
         // 3(3000)초 단위로 spu 메시지 발행
         setInterval(function () {
             nowTime = Math.floor(new Date().getTime() / 1000);
+            spu3_msg.spu_time = nowTime;
             //console.log(nowTime);
 
             for (var i = 0; i < 5; i++) {
@@ -104,7 +108,7 @@ mqtt_client.on('connect', function () {
 
             //console.log(spu3_msg);
             mqtt_client.publish(CONFIG.mqtt.topic[0], JSON.stringify(spu3_msg));
-        }, 5000);
+        }, CONFIG.spu_period);
     }, 3000);
 });
 
