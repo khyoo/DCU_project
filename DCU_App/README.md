@@ -4,4 +4,6 @@
 
     1. npm install
 
-    2. npm start
+    2. node dcu_input.js
+
+    3. node dcu_output.js
